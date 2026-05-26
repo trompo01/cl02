@@ -1,778 +1,438 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Showcase - Vitrina de Libros</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Bibliografía · </title>
+  <!-- Google Fonts + Smooth -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0c;
+      font-family: 'Inter', sans-serif;
+      color: #f0f0f0;
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* PAGES container */
+    .pages-container {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    .page {
+      display: none;
+      min-height: 100vh;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      background-attachment: fixed;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* overlay to improve readability (dark translucent) */
+    .page::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: brightness(0.9) blur(1px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .page-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    /* 3D TILT CARD (button / cell) */
+    .tilt-3d {
+      transition: transform 0.2s ease, box-shadow 0.2s;
+      transform-style: preserve-3d;
+      will-change: transform;
+      cursor: pointer;
+      background: rgba(20, 20, 30, 0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 20px -12px rgba(0,0,0,0.6);
+    }
+
+    /* glow neon black accent */
+    .neon-glow {
+      transition: all 0.2s;
+    }
+    .neon-glow:hover {
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.4), 0 0 5px rgba(0, 255, 255, 0.6);
+      border-color: #0ff3;
+    }
+
+    /* Buttons styling */
+    .btn-3d {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,240,0.3);
+      border-radius: 60px;
+      padding: 0.8rem 1.6rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+      transition: all 0.2s;
+      color: white;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-3d img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    .flag-scroll {
+      display: inline-flex;
+      gap: 8px;
+      overflow: hidden;
+      position: relative;
+      width: 130px;
+    }
+
+    .spark-link {
+      position: relative;
+      animation: gentleSpark 1.5s infinite alternate;
+    }
+
+    @keyframes gentleSpark {
+      0% { text-shadow: 0 0 0px #ffd966; }
+      100% { text-shadow: 0 0 6px #ffb347, 0 0 2px #ffaa33; }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    td, th {
+      padding: 0.75rem 0.5rem;
+      vertical-align: middle;
+    }
+
+    .book-table {
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      border-radius: 2rem;
+      overflow: hidden;
+      margin: 2rem 0;
+    }
+
+    .book-table a {
+      color: #f2e8cf;
+      text-decoration: none;
+      border-bottom: 1px dashed #9ac7c7;
+      transition: 0.2s;
+      display: inline-block;
+      font-weight: 500;
+    }
+
+    .book-table a:hover {
+      color: #ffde9c;
+      border-bottom: 1px solid #ffc857;
+      transform: translateX(4px);
+    }
+
+    .row-link {
+      display: block;
+      padding: 0.5rem 0;
+    }
+
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .title-glow {
+      background: linear-gradient(135deg, #fff, #bcbcff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    footer {
+      margin-top: 3rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    @media (max-width: 640px) {
+      .page-content {
+        padding: 1.5rem 1rem;
+      }
+      .btn-3d {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+      .grid-2cols {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    .grid-2cols {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+    }
+
+    .countdown-clock {
+      background: #000000aa;
+      border-radius: 2rem;
+      padding: 1rem;
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 2px;
+      backdrop-filter: blur(8px);
+      margin: 1rem 0;
+    }
+
+    img.embedded-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #ffffff10;
+      padding: 4px;
+    }
+  </style>
+  <script>
+    // Audio player + autoplay + loop
+    function initAudio() {
+      const audio = new Audio('kelvin.aac');
+      audio.loop = true;
+      audio.volume = 0.45;
+      audio.play().catch(e => console.log("Auto-play blocked, user interaction needed"));
+      // attempt to play on any user interaction if blocked
+      const resumeAudio = () => {
+        if (audio.paused) {
+          audio.play().catch(e=>null);
         }
-
-        :root {
-            --primary-dark: #0a0e27;
-            --secondary-dark: #1a1f3a;
-            --accent-neon: #00d4ff;
-            --accent-glow: #0080ff;
-            --text-light: #ffffff;
-            --gold: #d4af37;
-            --purple-neon: #9d4edd;
-            --pink-neon: #ff006e;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--primary-dark);
-            color: var(--text-light);
-            overflow-x: hidden;
-            perspective: 1000px;
-        }
-
-        /* Audio Player */
-        .audio-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(26, 31, 58, 0.95);
-            border: 2px solid var(--accent-neon);
-            border-radius: 50px;
-            padding: 10px 20px;
-            z-index: 1000;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .audio-player button {
-            background: none;
-            border: none;
-            color: var(--accent-neon);
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .audio-player button:hover {
-            color: var(--gold);
-            transform: scale(1.2);
-            text-shadow: 0 0 10px var(--gold);
-        }
-
-        .page {
-            min-height: 100vh;
-            width: 100%;
-            position: relative;
-            display: none;
-            padding: 20px;
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .page.active {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(10, 14, 39, 0.6);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .page-content {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Page 1 - Welcome */
-        #page1 {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23004080" stroke-width="0.5"/></pattern></defs><rect width="1200" height="800" fill="%23001a4d"/><rect width="1200" height="800" fill="url(%23grid)"/></svg>');
-        }
-
-        .welcome-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 60px;
-            text-align: center;
-        }
-
-        .welcome-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--accent-neon) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .language-buttons {
-            display: flex;
-            gap: 40px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .lang-button {
-            position: relative;
-            width: 280px;
-            height: 120px;
-            background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--accent-glow) 100%);
-            border: 3px solid var(--accent-neon);
-            border-radius: 15px;
-            color: var(--text-light);
-            font-size: 1.5rem;
-            font-weight: 700;
-            cursor: pointer;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
-            transform-style: preserve-3d;
-        }
-
-        .lang-button:hover {
-            transform: translateZ(20px) scale(1.05) rotateX(5deg) rotateY(10deg);
-            box-shadow: 0 0 50px rgba(0, 212, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1);
-            background: linear-gradient(135deg, var(--accent-glow) 0%, var(--accent-neon) 100%);
-        }
-
-        .lang-button::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
-            transform: rotate(45deg);
-            animation: sparkle 0.6s ease infinite;
-        }
-
-        @keyframes sparkle {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .flag-carousel {
-            height: 60px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
-            gap: 15px;
-            min-height: 60px;
-        }
-
-        .flag {
-            font-size: 2.5rem;
-            animation: flagScroll 1s ease-in-out;
-        }
-
-        @keyframes flagScroll {
-            0% { opacity: 0; transform: translateY(-20px); }
-            50% { opacity: 1; }
-            100% { opacity: 0; transform: translateY(20px); }
-        }
-
-        /* Content Table */
-        .book-table {
-            width: 100%;
-            background-color: rgba(26, 31, 58, 0.9);
-            border-collapse: collapse;
-            border: 2px solid var(--accent-neon);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 40px 0;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
-        }
-
-        .book-table thead {
-            background: linear-gradient(135deg, var(--accent-glow) 0%, var(--accent-neon) 100%);
-            border-bottom: 3px solid var(--gold);
-        }
-
-        .book-table th {
-            padding: 20px;
-            text-align: left;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .book-table tbody tr {
-            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .book-table tbody tr:hover {
-            background-color: rgba(0, 212, 255, 0.1);
-            transform: scale(1.02);
-        }
-
-        .book-table td {
-            padding: 16px 20px;
-            font-size: 1rem;
-        }
-
-        .book-table a {
-            color: var(--accent-neon);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 8px 12px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .book-table a:hover {
-            background-color: rgba(0, 212, 255, 0.2);
-            color: var(--gold);
-            text-shadow: 0 0 10px var(--accent-neon);
-            transform: translateX(5px);
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
-        .button-3d {
-            position: relative;
-            padding: 15px 35px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border: 2px solid var(--accent-neon);
-            background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--accent-glow) 100%);
-            color: var(--text-light);
-            cursor: pointer;
-            text-decoration: none;
-            border-radius: 10px;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
-            transform-style: preserve-3d;
-            overflow: hidden;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            min-width: 200px;
-            min-height: 60px;
-        }
-
-        .button-3d:hover {
-            transform: translateY(-8px) rotateX(8deg) rotateY(15deg) scale(1.05);
-            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1);
-            background: linear-gradient(135deg, var(--accent-glow) 0%, var(--accent-neon) 100%);
-        }
-
-        .button-3d::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-            transform: rotate(45deg);
-            animation: glow 1.5s ease infinite;
-        }
-
-        @keyframes glow {
-            0% { transform: rotate(0deg) scale(0.8); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: rotate(360deg) scale(2); opacity: 0; }
-        }
-
-        .button-img {
-            height: 50px;
-            width: auto;
-            display: flex;
-            align-items: center;
-        }
-
-        .button-img img {
-            max-height: 40px;
-            max-width: 120px;
-            object-fit: contain;
-        }
-
-        /* Footer */
-        .footer {
-            margin-top: 60px;
-            padding: 30px;
-            background-color: rgba(10, 14, 39, 0.8);
-            border-top: 2px solid var(--accent-neon);
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Page Titles */
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--accent-neon) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: center;
-        }
-
-        .book-subtitle {
-            font-size: 1.1rem;
-            color: var(--accent-neon);
-            margin-bottom: 20px;
-            text-align: center;
-            font-style: italic;
-        }
-
-        .author-name {
-            font-size: 1.2rem;
-            color: var(--gold);
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: 600;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .welcome-title {
-                font-size: 2rem;
-            }
-
-            .language-buttons {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-            }
-
-            .lang-button {
-                width: 100%;
-                max-width: 300px;
-                height: 100px;
-            }
-
-            .book-table th, .book-table td {
-                padding: 12px 10px;
-                font-size: 0.9rem;
-            }
-
-            .page-title {
-                font-size: 1.8rem;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 15px;
-            }
-
-            .button-3d {
-                width: 100%;
-            }
-
-            .footer {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .page {
-                padding: 10px;
-            }
-        }
-
-        /* Mouse tilt effect */
-        .tilt-element {
-            transition: transform 0.2s ease-out;
-        }
-
-        /* Neon lines */
-        .neon-line {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-neon), transparent);
-            margin: 20px 0;
-        }
-
-        .page2-bg {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid2" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23800080" stroke-width="0.5"/></pattern></defs><rect width="1200" height="800" fill="%231a0033"/><rect width="1200" height="800" fill="url(%23grid2)"/></svg>');
-        }
-
-        .page3-bg {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid3" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23800020" stroke-width="0.5"/></pattern></defs><rect width="1200" height="800" fill="%23330000"/><rect width="1200" height="800" fill="url(%23grid3)"/></svg>');
-        }
-
-        .page4-bg {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid4" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23008080" stroke-width="0.5"/></pattern></defs><rect width="1200" height="800" fill="%23001a2e"/><rect width="1200" height="800" fill="url(%23grid4)"/></svg>');
-        }
-
-        .page5-bg {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid5" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23008000" stroke-width="0.5"/></pattern></defs><rect width="1200" height="800" fill="%23001a00"/><rect width="1200" height="800" fill="url(%23grid5)"/></svg>');
-        }
-    </style>
+        document.removeEventListener('click', resumeAudio);
+        document.removeEventListener('touchstart', resumeAudio);
+      };
+      document.addEventListener('click', resumeAudio);
+      document.addEventListener('touchstart', resumeAudio);
+      window.audioPlayer = audio;
+    }
+    window.addEventListener('load', initAudio);
+  </script>
 </head>
 <body>
-
-<!-- Audio Player -->
-<div class="audio-player">
-    <button id="playBtn" onclick="togglePlay()">▶</button>
-    <span>Music</span>
-</div>
-
-<!-- Audio Element -->
-<audio id="bgMusic" loop>
-    <source src="kelvin.aac" type="audio/aac">
-</audio>
-
-<!-- PAGE 1: Welcome / Bienvenida -->
-<div id="page1" class="page active">
-    <div class="page-content">
-        <div class="welcome-content">
-            <h1 class="welcome-title">📚 LITERARY WORLDS 📚</h1>
-            
-            <div class="language-buttons">
-                <!-- Spanish Button -->
-                <a href="#page2" class="lang-button" onclick="goToPage(2); stopPropagation(event)">
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                        <div class="flag-carousel">
-                            <span class="flag">🇪🇸</span>
-                        </div>
-                        <div style="font-size: 1.4rem; font-weight: 700;">[ESPAÑOL]</div>
-                    </div>
-                </a>
-
-                <!-- English Button -->
-                <a href="#page4" class="lang-button" onclick="goToPage(4); stopPropagation(event)">
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                        <div class="flag-carousel">
-                            <span class="flag">🇺🇸</span>
-                        </div>
-                        <div style="font-size: 1.4rem; font-weight: 700;">[ENGLISH]</div>
-                    </div>
-                </a>
-            </div>
-        </div>
+<div class="pages-container" id="app">
+  <!-- PAGE #1: Welcome with 2x3 table (2cols, 3rows) -->
+  <div id="page1" class="page active" style="background: radial-gradient(circle at 10% 20%, #1a1a2a, #050510);">
+    <div class="page-content" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+      <h1 style="text-align:center; margin-bottom:1rem;">📖 BIBLIOGRAFÍA</h1>
+      <p style="text-align:center; margin-bottom:2rem;"></p>
+      <!-- 2 columns x 3 rows table (grid style but table) -->
+      <table style="width:100%; max-width:1000px; margin:0 auto; background:transparent; border-spacing: 1rem; border-collapse: separate;">
+        <tr>
+          <td style="width:50%;"><div id="tilt-cell-1" class="tilt-3d neon-glow" style="padding:1rem; text-align:center; cursor:pointer;" data-page="2"><img src="vesp.jpg" style="width:70px; height:70px; object-fit:cover; border-radius:18px; margin-bottom:8px;"><br><strong>CUANDO LA FAMILIA SE ROMPE...</strong><br><span style="font-size:0.8rem;">Vanina Vergara</span></div></td>
+          <td><div id="tilt-cell-2" class="tilt-3d neon-glow" style="padding:1rem; text-align:center; cursor:pointer;" data-page="3"><img src="pesp.jpg" style="width:70px;height:70px;object-fit:cover;border-radius:18px;margin-bottom:8px;"><br><strong>MANUAL DEL INADAPTADO LÚCIDO</strong><br><span style="font-size:0.8rem;">Pablo Mera</span></div></td>
+        </tr>
+        <tr>
+          <td><div id="tilt-cell-3" class="tilt-3d neon-glow" style="padding:1rem; text-align:center; cursor:pointer;" data-page="4"><img src="lamp.jpg" style="width:70px;height:70px;object-fit:cover;border-radius:18px;margin-bottom:8px;"><br><strong>EL JARDÍN DE LOS QUE VOLVIERON</strong><br><span style="font-size:0.8rem;">Vanina Vergara</span></div></td>
+          <td><div id="tilt-cell-4" class="tilt-3d neon-glow" style="padding:1rem; text-align:center; cursor:pointer;" data-page="5"><img src="crc.jpg" style="width:70px;height:70px;object-fit:cover;border-radius:18px;margin-bottom:8px;"><br><strong>CARACOL · Menú de Autor</strong><br><span style="font-size:0.8rem;">Pablo Mera</span></div></td>
+        </tr>
+        <tr>
+          <td><div id="tilt-cell-5" class="tilt-3d neon-glow" style="padding:1rem; text-align:center; cursor:pointer;" data-page="6"><img src="veng.jpg" style="width:70px;height:70px;object-fit:cover;border-radius:18px;margin-bottom:8px;"><br><strong>WHEN FAMILIES FRACTURE IN SILENCE</strong><br><span style="font-size:0.8rem;">Vanina Vergara</span></div></td>
+          <td><div id="tilt-cell-6" class="tilt-3d neon-glow" style="padding:1rem; text-align:center; cursor:pointer;" data-page="7"><img src="peng.jpg" style="width:70px;height:70px;object-fit:cover;border-radius:18px;margin-bottom:8px;"><br><strong>THE LUCID MISFIT'S HANDBOOK</strong><br><span style="font-size:0.8rem;">Pablo Mera</span></div></td>
+        </tr>
+      </table>
+      <!-- two extra buttons with alternating flags and sparking -->
+      <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin: 2rem 0;">
+        <a id="espanol-btn" class="btn-3d spark-link" style="gap:10px;"><span class="flag-scroll" id="flags-es">🇪🇸 🇵🇾 🇦🇷 🇺🇾</span> [ESPAÑOL] → #2</a>
+        <a id="english-btn" class="btn-3d spark-link" style="gap:10px;"><span class="flag-scroll" id="flags-en">🇺🇸 🇬🇧 🇦🇺</span> [ENGLISH] → #6</a>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- PAGE 2: Español - Libro 1 -->
-<div id="page2" class="page page2-bg">
+  <!-- PAGE #2 (background vesp.jpg) -->
+  <div id="page2" class="page" style="background-image: url('vesp.jpg');">
     <div class="page-content">
-        <h1 class="page-title">CUANDO LA FAMILIA SE ROMPE EN SILENCIO</h1>
-        <p class="book-subtitle">La historia jamás contada de una mujer que se negó a desaparecer</p>
-        <p class="author-name">Autora: Vanina Vergara</p>
-        
-        <div class="neon-line"></div>
-
-        <table class="book-table">
-            <thead>
-                <tr>
-                    <th>📖 Lecturas & Enlaces / Readings & Links</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td><a href="https://open.spotify.com/episode/0NPQyJXWyQDAiU5YjKMuTu" target="_blank">🎙️ Reseña hablada / Spoken Review</a></td></tr>
-                <tr><td><a href="https://calendar.app.google/qPbm4PQfsSatFHAV9" target="_blank">💬 Conversemos por WhatsApp / Chat via WhatsApp</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/dp/B0GX32NHDV" target="_blank">📱 Kindle Version</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXK7J5GJ/ref=tmm_pap_swatch₀" target="_blank">📘 Tapa Blanda / Paperback</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXRZ1356/ref=tmm_hrd_swatch₀" target="_blank">📕 Tapa Dura / Hardcover</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXRZ1356/ref=cm_cr_arp_d_product_top?ie=UTF8&asin=B0GXRZ1356&revisionId=&format=4&depth=1" target="_blank">🆓 Leer Gratis / Read Free</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/product-reviews/B0GXRZ1356/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">⭐ Hacer Reviews / Write Reviews</a></td></tr>
-                <tr><td><a href="https://open.spotify.com/user/317ykrwrwfzqf42uw75bcp3awzqi/playlists" target="_blank">🎵 Podcasts y Música / Podcasts & Music</a></td></tr>
-                <tr><td><a href="https://www.goodreads.com/book/show/251226179-cuando-la-familia-se-rompe-en-silencio" target="_blank">📚 Goodreads</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/stores/author/B0GX6FYBXK/allbooks?ingress=0&visitId=eb5af085-1ace-48ee-9c61-d47621676faa&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=cc3fa529-e2e6-4fce-8dd8-10e038c3bc76" target="_blank">✍️ Sobre el Autor / About the Author</a></td></tr>
-            </tbody>
-        </table>
-
-        <div class="neon-line"></div>
-
-        <div class="action-buttons">
-            <a href="#page3" class="button-3d" onclick="goToPage(3); stopPropagation(event)">
-                <span>🛒 Comprar / Buy</span>
-                <div class="button-img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50'%3E%3Ctext x='50' y='35' font-size='30' text-anchor='middle' fill='%23d4af37'%3EAmazon%3C/text%3E%3C/svg%3E" alt="Amazon"></div>
-            </a>
-            <a href="https://www.mercadolibre.com.ar/cod1356-cuando-la-familia-se-rompe-en-silencio-la-historia/up/MLAU3933325251" target="_blank" class="button-3d">
-                <span>🛍️ MercadoLibre</span>
-            </a>
+      <div class="book-table" style="padding:1.5rem;">
+        <h2>📘 CUANDO LA FAMILIA SE ROMPE EN SILENCIO</h2>
+        <p><em>La historia jamás contada de una mujer que se negó a desaparecer</em><br><strong>Autora: Vanina Vergara</strong></p>
+        <table style="background:transparent;"><tbody>
+          <tr><td><a href="https://open.spotify.com/episode/0NPQyJXWyQDAiU5YjKMuTu" target="_blank">🎧 Reseña hablada</a></td></tr>
+          <tr><td><a href="https://calendar.app.google/qPbm4PQfsSatFHAV9" target="_blank">💬 Si te interesa mi historia conversemos por Whatsapp</a></td></tr>
+          <tr><td><a href="https://www.amazon.com/dp/B0GX32NHDV" target="_blank">📱 Kindle Version</a></td></tr>
+          <tr><td><a href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXK7J5GJ/ref=tmm_pap_swatch_0" target="_blank">📖 Tapa Blanda</a></td></tr>
+          <tr><td><a href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXRZ1356/ref=tmm_hrd_swatch_0" target="_blank">📚 Tapa Dura</a></td></tr>
+          <tr><td><a href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXRZ1356/ref=cm_cr_arp_d_product_top?ie=UTF8&asin=B0GXRZ1356&revisionId=&format=4&depth=1" target="_blank">📖 Leer Gratis</a></td></tr>
+          <tr><td><a href="https://www.amazon.com/product-reviews/B0GXRZ1356/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">✍️ Hacer Reviews</a></td></tr>
+          <tr><td><a href="https://open.spotify.com/user/317ykrwrwfzqf42uw75bcp3awzqi/playlists" target="_blank">🎶 Podcasts y Musica</a></td></tr>
+          <tr><td><a href="https://www.goodreads.com/book/show/251226179-cuando-la-familia-se-rompe-en-silencio" target="_blank">📚 Goodreads</a></td></tr>
+          <tr><td><a href="https://www.amazon.com/stores/author/B0GX6FYBXK/allbooks?ingress=0&visitId=eb5af085-1ace-48ee-9c61-d47621676faa&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=cc3fa529-e2e6-4fce-8dd8-10e038c3bc76" target="_blank">👤 Sobre el Autor</a></td></tr>
+        </tbody></table>
+        <div style="display:flex; gap:1rem; justify-content:center; margin:1.5rem 0;">
+          <a class="btn-3d" id="amzBtn2" style="gap:0.5rem;"><img src="vesp.jpg" width="30"> <img src="amazon.png" width="30"> Amazon</a>
+          <a class="btn-3d" id="mercBtn2" style="gap:0.5rem;"><img src="v1.png" width="30"> <img src="mercadolibre.png" width="30"> MercadoLibre</a>
         </div>
-
-        <div class="footer">
-            <a href="#page3" class="button-3d" onclick="goToPage(3); stopPropagation(event)" style="min-width: 150px;">
-                NEXT ⬜ SIGUIENTE
-            </a>
-            <a href="#page1" class="button-3d" onclick="goToPage(1); stopPropagation(event)" style="min-width: 150px;">
-                PREVIOUS ⬛ ANTERIOR
-            </a>
-        </div>
+      </div>
+      <footer><a id="prev1-2" class="btn-3d">◀ PREVIOUS / ANTERIOR</a><a id="next2-3" class="btn-3d">NEXT / SIGUIENTE ▶</a></footer>
     </div>
-</div>
+  </div>
 
-<!-- PAGE 3: Español - Libro 2 -->
-<div id="page3" class="page page3-bg">
+  <!-- PAGE #3 pesp.jpg background, table T3.1 11 links + T3.2 2x2-->
+  <div id="page3" class="page" style="background-image: url('pesp.jpg');">
     <div class="page-content">
-        <h1 class="page-title">MANUAL DEL INADAPTADO LÚCIDO</h1>
-        <p class="book-subtitle">No encajar es una Ventaja. Un manual para pensar mejor y vivir libre</p>
-        <p class="author-name">Autor: Pablo Mera</p>
-        
-        <div class="neon-line"></div>
-
-        <table class="book-table">
-            <thead>
-                <tr>
-                    <th>📖 Lecturas & Enlaces / Readings & Links</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td><a href="https://open.spotify.com/episode/68ViKPcRmymkiRUbdKDO9d?nd=1&dlsi=47136d4ef78a4afa" target="_blank">🎙️ Reseña hablada / Spoken Review</a></td></tr>
-                <tr><td><a href="https://calendar.app.google/KHzX46haiRjtQo6Y9" target="_blank">💬 Conversemos por Google Meet / Chat via Google Meet</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/dp/B0GX9ZZPCL" target="_blank">📱 Kindle Version</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/MANUAL-DEL-INADAPTADO-L%C3%9ACIDO-encajar/dp/B0GYYXMR9G/ref=tmm_pap_swatch₀" target="_blank">📘 Tapa Blanda / Paperback</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/MANUAL-DEL-INADAPTADO-L%C3%9ACIDO-encajar/dp/B0GYZ4D8WN/ref=tmm_hrd_swatch₀" target="_blank">📕 Tapa Dura / Hardcover</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/dp/B0GYZ4D8WN?asin=B0GYZ4D8WN&revisionId=&format=4&depth=1" target="_blank">🆓 Leer Gratis / Read Free</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/product-reviews/B0GYZ4D8WN/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">⭐ Hacer Reviews / Write Reviews</a></td></tr>
-                <tr><td><a href="https://open.spotify.com/user/31wg5yir2hbksdgigz7gqloozfny/playlists" target="_blank">🎵 Podcasts y Música / Podcasts & Music</a></td></tr>
-                <tr><td><a href="https://www.goodreads.com/book/show/251612051-manual-del-inadaptado-l-cido?ac=1&from_search=true&qid=HkwoBXUaLj&rank=2" target="_blank">📚 Goodreads</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/stores/author/B0GYVD1VV3/allbooks?_encoding=UTF8&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=f1214e32-dde0-4b94-b78d-a04562abb350" target="_blank">✍️ Sobre el Autor / About the Author</a></td></tr>
-            </tbody>
-        </table>
-
-        <div class="neon-line"></div>
-
-        <div class="action-buttons">
-            <a href="https://www.amazon.com/MANUAL-DEL-INADAPTADO-L%C3%9ACIDO-encajar/dp/B0GYYXMR9G/ref=tmm_pap_swatch₀" target="_blank" class="button-3d">
-                <span>🛒 Comprar / Buy</span>
-            </a>
-            <a href="https://www.booksamillion.com/p/Manual-Inadaptado-Lcido/Pablo-Mera/9798259335431" target="_blank" class="button-3d">
-                <span>📦 En Stock en 260 tiendas EEUU</span>
-            </a>
-        </div>
-
-        <div class="footer">
-            <a href="#page4" class="button-3d" onclick="goToPage(4); stopPropagation(event)" style="min-width: 150px;">
-                NEXT ⬜ SIGUIENTE
-            </a>
-            <a href="#page2" class="button-3d" onclick="goToPage(2); stopPropagation(event)" style="min-width: 150px;">
-                PREVIOUS ⬛ ANTERIOR
-            </a>
-        </div>
+      <div class="book-table"><h2>📕 MANUAL DEL INADAPTADO LÚCIDO</h2><p><em>No encajar es una Ventaja .Un manual para pensar mejor y vivir libre</em><br><strong>Autor: Pablo Mera</strong></p>
+        <table><tbody id="t31-links"></tbody></table>
+        <!-- T3.2 grid 2x2 -->
+        <div class="grid-2cols" style="margin-top:2rem;" id="t32-grid"></div>
+      </div>
+      <footer><a id="prev2-3" class="btn-3d">◀ PREVIOUS / ANTERIOR</a><a id="next3-4" class="btn-3d">NEXT / SIGUIENTE ▶</a></footer>
     </div>
+  </div>
+  
+  <!-- PAGE #4 lamp.jpg -->
+  <div id="page4" class="page" style="background-image: url('lamp.jpg');">
+    <div class="page-content"><div class="book-table"><h2>🌿 EL JARDÍN DE LOS QUE VOLVIERON</h2><p><em>Caer es la única forma de volar</em><br>Autora: Vanina Vergara</p><table id="t4-links"></table><div style="text-align:center; margin:2rem 0;"><a id="lampAmazonBtn" class="btn-3d"><img src="lamp.jpg" width="30"><img src="amazon.png" width="30"> Comprar en Amazon</a></div></div><footer><a id="prev3-4" class="btn-3d">◀ PREVIOUS / ANTERIOR</a><a id="next4-5" class="btn-3d">NEXT / SIGUIENTE ▶</a></footer></div>
+  </div>
+  
+  <!-- PAGE #5 crc.jpg countdown -->
+  <div id="page5" class="page" style="background-image: url('crc.jpg');">
+    <div class="page-content" style="text-align:center;"><h1>🐌 CARACOL – Menú de Autor</h1><h3>Pablo Mera</h3><img src="crc1.png" style="max-width:280px; margin:1rem auto; border-radius:2rem;"><div id="countdownDisplay" class="countdown-clock"></div><div style="display:flex; justify-content:center; gap:1rem; margin-top:2rem;"><a id="prev4-5" class="btn-3d">◀ PREVIOUS / ANTERIOR</a><a id="next5-6" class="btn-3d">NEXT / SIGUIENTE ▶</a></div></div>
+  </div>
+  
+  <!-- PAGE #6 veng.jpg -->
+  <div id="page6" class="page" style="background-image: url('veng.jpg');">
+    <div class="page-content"><div class="book-table"><h2>📘 WHEN FAMILIES FRACTURE IN SILENCE</h2><p>A true story of silence, loss, and a mother's fight to be seen<br>Author: Vanina Vergara</p><table id="t6-links"></table><div style="text-align:center;"><a id="vengAmazon" class="btn-3d"><img src="veng.jpg" width="30"><img src="amazon.png" width="30"> Amazon</a></div></div><footer><a id="prev5-6" class="btn-3d">◀ PREVIOUS / ANTERIOR</a><a id="next6-7" class="btn-3d">NEXT / SIGUIENTE ▶</a></footer></div>
+  </div>
+  
+  <!-- PAGE #7 peng.jpg + T7.1 ten links + T7.2 2x4 -->
+  <div id="page7" class="page" style="background-image: url('peng.jpg');">
+    <div class="page-content"><div class="book-table"><h2>✨ THE LUCID MISFIT’S HANDBOOK</h2><p>Exploring The Voluntarily Invisible in our Shared Life<br>Author: Pablo Mera</p><table id="t71-links"></table><div class="grid-2cols" style="margin-top:1.5rem;" id="t72-grid"></div></div><footer><a id="prev6-7" class="btn-3d">◀ PREVIOUS / ANTERIOR</a><a id="next7-1" class="btn-3d">NEXT / SIGUIENTE ▶</a></footer></div>
+  </div>
 </div>
-
-<!-- PAGE 4: English - Book 1 -->
-<div id="page4" class="page page4-bg">
-    <div class="page-content">
-        <h1 class="page-title">WHEN FAMILIES FRACTURE IN SILENCE</h1>
-        <p class="book-subtitle">A true story of silence, loss, and a mother's fight to be seen</p>
-        <p class="author-name">Author: Vanina Vergara</p>
-        
-        <div class="neon-line"></div>
-
-        <table class="book-table">
-            <thead>
-                <tr>
-                    <th>📖 Readings & Links</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td><a href="https://open.spotify.com/episode/2ZsEHMdtUXzwtVT3jvO9G7?si=IWwanv2ERhq75Pfq0itE7w" target="_blank">🎙️ Spoken Review</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/When-Families-Fracture-Silence-Disappear-ebook/dp/B0GX35M57P/ref=tmm_kin_swatch₀" target="_blank">📱 Kindle Version</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/When-Families-Fracture-Silence-Disappear/dp/B0GX7TCKHD/ref=tmm_pap_swatch₀" target="_blank">📘 Paperback</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/dp/B0GY8741Q3" target="_blank">📕 Hardcover</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/When-Families-Fracture-Silence-Disappear-ebook/dp/B0GX35M57P/ref=tmm_kin_swatch_0?asin=B0GX35M57P&revisionId=e5eb7937&format=3&depth=1" target="_blank">🆓 Read Sample</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/product-reviews/B0GX35M57P/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">⭐ Write a Review</a></td></tr>
-                <tr><td><a href="https://open.spotify.com/user/317ykrwrwfzqf42uw75bcp3awzqi/playlists" target="_blank">🎵 Handpicked Music and Podcasts</a></td></tr>
-                <tr><td><a href="https://www.goodreads.com/book/show/251052005-when-families-fracture-in-silence" target="_blank">📚 Goodreads</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/stores/author/B0GX6FYBXK/allbooks?ingress=0&visitId=eb5af085-1ace-48ee-9c61-d47621676faa&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=cc3fa529-e2e6-4fce-8dd8-10e038c3bc76" target="_blank">✍️ About the Author</a></td></tr>
-            </tbody>
-        </table>
-
-        <div class="neon-line"></div>
-
-        <div class="action-buttons">
-            <a href="https://www.amazon.com/When-Families-Fracture-Silence-Disappear/dp/B0GX7TCKHD/ref=tmm_pap_swatch₀" target="_blank" class="button-3d">
-                <span>🛒 Purchase on Amazon</span>
-            </a>
-        </div>
-
-        <div class="footer">
-            <a href="#page5" class="button-3d" onclick="goToPage(5); stopPropagation(event)" style="min-width: 150px;">
-                NEXT ⬜ SIGUIENTE
-            </a>
-            <a href="#page3" class="button-3d" onclick="goToPage(3); stopPropagation(event)" style="min-width: 150px;">
-                PREVIOUS ⬛ ANTERIOR
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- PAGE 5: English - Book 2 -->
-<div id="page5" class="page page5-bg">
-    <div class="page-content">
-        <h1 class="page-title">THE LUCID MISFIT'S HANDBOOK</h1>
-        <p class="book-subtitle">Exploring The Voluntarily Invisible in our Shared Life</p>
-        <p class="author-name">Author: Pablo Mera</p>
-        
-        <div class="neon-line"></div>
-
-        <table class="book-table">
-            <thead>
-                <tr>
-                    <th>📖 Readings & Links</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td><a href="https://open.spotify.com/episode/5InbATRatdsqyWipxhgBuv?si=9kyvXh_LSAaAJFftOWHzPA" target="_blank">🎙️ Spoken Review</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily-ebook/dp/B0GYMCM3N3/ref=tmm_kin_swatch₀" target="_blank">📱 Kindle Version</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYPK6397/ref=tmm_pap_swatch₀" target="_blank">📘 Paperback</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYNYJFD5/ref=tmm_hrd_swatch₀" target="_blank">📕 Hardcover</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYNYJFD5/ref=tmm_hrd_swatch_0?asin=B0GYNYJFD5&revisionId=&format=4&depth=1" target="_blank">🆓 Read Sample</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/product-reviews/B0GYNYJFD5/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">⭐ Write a Review</a></td></tr>
-                <tr><td><a href="https://open.spotify.com/user/31egimzo6jur5btr4tmxl5cbyfpe/playlists" target="_blank">🎵 Handpicked Music and Podcasts</a></td></tr>
-                <tr><td><a href="https://www.goodreads.com/book/show/251502207-the-lucid-misfit-s-handbook" target="_blank">📚 Goodreads</a></td></tr>
-                <tr><td><a href="https://www.amazon.com/stores/author/B0GYVD1VV3/allbooks?_encoding=UTF8&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=f1214e32-dde0-4b94-b78d-a04562abb350" target="_blank">✍️ About the Author</a></td></tr>
-            </tbody>
-        </table>
-
-        <div class="neon-line"></div>
-
-        <div class="action-buttons">
-            <a href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYPK6397/ref=tmm_pap_swatch₀" target="_blank" class="button-3d">
-                <span>🛒 Buy on Amazon</span>
-            </a>
-            <a href="https://www.booksamillion.com/p/Lucid-Misfits-Handbook/Pablo-Mera/9798259022409" target="_blank" class="button-3d">
-                <span>📦 In Stock 260 USA Stores</span>
-            </a>
-            <a href="https://www.books.com.tw/products/F01c038522" target="_blank" class="button-3d">
-                <span>🇹🇼 Books Taiwan</span>
-            </a>
-            <a href="https://www.saxo.com/dk/the-lucid-misfits-handbook-exploring-the-voluntarily-invisible-in-our-shared-life_bog_9798259022409" target="_blank" class="button-3d">
-                <span>🇩🇰 Saxo Denmark</span>
-            </a>
-            <a href="https://bookshop.org/p/books/the-lucid-misfit-s-handbook-exploring-the-voluntarily-invisible-in-our-shared-life-pablo-mera/7e540685097c0cf9?ean=9798259022409&next=t" target="_blank" class="button-3d">
-                <span>🌍 Bookshop.org</span>
-            </a>
-        </div>
-
-        <div class="footer">
-            <a href="#page1" class="button-3d" onclick="goToPage(1); stopPropagation(event)" style="min-width: 150px;">
-                NEXT ⬜ SIGUIENTE
-            </a>
-            <a href="#page4" class="button-3d" onclick="goToPage(4); stopPropagation(event)" style="min-width: 150px;">
-                PREVIOUS ⬛ ANTERIOR
-            </a>
-        </div>
-    </div>
-</div>
-
 <script>
-// Music player
-const bgMusic = document.getElementById('bgMusic');
-const playBtn = document.getElementById('playBtn');
-let isPlaying = false;
-
-function togglePlay() {
-    if (isPlaying) {
-        bgMusic.pause();
-        playBtn.textContent = '▶';
-        isPlaying = false;
-    } else {
-        bgMusic.play();
-        playBtn.textContent = '⏸';
-        isPlaying = true;
-    }
-}
-
-// Start playing on page load
-window.addEventListener('load', () => {
-    bgMusic.play();
-    playBtn.textContent = '⏸';
-    isPlaying = true;
-});
-
-// Page navigation
-function goToPage(pageNum) {
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(page => page.classList.remove('active'));
-    document.getElementById(`page${pageNum}`).classList.add('active');
-    window.scrollTo(0, 0);
-}
-
-// Prevent event bubbling
-function stopPropagation(e) {
-    e.stopPropagation();
-}
-
-// Mouse tilt effect for 3D buttons
-document.addEventListener('mousemove', (e) => {
-    const buttons = document.querySelectorAll('.button-3d, .lang-button');
-    buttons.forEach(button => {
-        const rect = button.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 10;
-        const rotateY = (centerX - x) / 10;
+  // Helper navigation
+  const pages = ['page1','page2','page3','page4','page5','page6','page7'];
+  function showPage(id){
+    pages.forEach(p=>document.getElementById(p).classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  // 3D Tilt effect (simple)
+  function applyTilt(elements){
+    elements.forEach(el=>{
+      if(!el)return;
+      el.addEventListener('mousemove',(e)=>{
+        const rect=el.getBoundingClientRect();
+        const x=e.clientX-rect.left;
+        const y=e.clientY-rect.top;
+        const centerX=rect.width/2,centerY=rect.height/2;
+        const rotX=(y-centerY)/20;
+        const rotY=(centerX-x)/20;
+        el.style.transform=`perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(8px)`;
+      });
+      el.addEventListener('mouseleave',()=>{el.style.transform='perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0px)';});
     });
-});
-
-// Flag animation for language buttons
-const flags = {
-    spanish: ['🇪🇸', '🇵🇾', '🇦🇷', '🇺🇾'],
-    english: ['🇺🇸', '🇬🇧', '🇦🇺']
-};
-
-let flagIndex = 0;
-setInterval(() => {
-    const spanishFlags = document.querySelectorAll('.lang-button')[0]?.querySelector('.flag-carousel');
-    const englishFlags = document.querySelectorAll('.lang-button')[1]?.querySelector('.flag-carousel');
-    
-    if (spanishFlags) {
-        flagIndex = (flagIndex + 1) % flags.spanish.length;
-        spanishFlags.innerHTML = `<span class="flag">${flags.spanish[flagIndex]}</span>`;
-    }
-    if (englishFlags) {
-        englishFlags.innerHTML = `<span class="flag">${flags.english[flagIndex % flags.english.length]}</span>`;
-    }
-}, 800);
+  }
+  // dynamic link builders
+  const t31links = [
+    ["🎧 Reseña hablada","https://open.spotify.com/episode/68ViKPcRmymkiRUbdKDO9d?nd=1&dlsi=47136d4ef78a4afa"],
+    ["💬 Si te interesan mis ideas conversemos por Google Meet","https://calendar.app.google/KHzX46haiRjtQo6Y9"],
+    ["📱 Kindle Version","https://www.amazon.com/dp/B0GX9ZZPCL"],
+    ["📖 Tapa Blanda","https://www.amazon.com/MANUAL-DEL-INADAPTADO-L%C3%9ACIDO-encajar/dp/B0GYYXMR9G/ref=tmm_pap_swatch₀"],
+    ["📚 Tapa Dura","https://www.amazon.com/MANUAL-DEL-INADAPTADO-L%C3%9ACIDO-encajar/dp/B0GYZ4D8WN/ref=tmm_hrd_swatch₀"],
+    ["📖 Leer Gratis","https://www.amazon.com/dp/B0GYZ4D8WN?asin=B0GYZ4D8WN&revisionId=&format=4&depth=1"],
+    ["✍️ Hacer Reviews","https://www.amazon.com/product-reviews/B0GYZ4D8WN/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews"],
+    ["🎶 Podcasts y Musica","https://open.spotify.com/user/31wg5yir2hbksdgigz7gqloozfny/playlists"],
+    ["📚 Goodreads","https://www.goodreads.com/book/show/251612051-manual-del-inadaptado-l-cido?ac=1&from_search=true&qid=HkwoBXUaLj&rank=2"],
+    ["👤 Sobre el Autor","https://www.amazon.com/stores/author/B0GYVD1VV3/allbooks?_encoding=UTF8&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=f1214e32-dde0-4b94-b78d-a04562abb350"],
+    ["📝 Blog","https://pablomera.blogspot.com/"]
+  ];
+  const t32cells = [
+    {img:"amazon.png", link:"https://www.amazon.com/MANUAL-DEL-INADAPTADO-L%C3%9ACIDO-encajar/dp/B0GYYXMR9G/ref=tmm_pap_swatch₀"},
+    {img:"ibs.svg", link:"https://www.ibs.it/manual-del-inadaptado-lucido-no-libro-inglese-pablo-mera/e/9798259335431"},
+    {img:"feltri.svg", link:"https://www.lafeltrinelli.it/manual-del-inadaptado-lucido-no-libro-inglese-pablo-mera/e/9798259335431"},
+    {img:"bam.png", link:"https://www.booksamillion.com/p/Manual-Inadaptado-Lcido/Pablo-Mera/9798259335431"}
+  ];
+  const t4links = [
+    ["📱 Kindle Version","https://www.amazon.com/dp/B0H2SXVWR5"],["📖 Tapa Blanda","https://www.amazon.com/dp/B0H2VKMWZ1"],["📚 Tapa Dura","https://www.amazon.com/dp/B0H2VXDQY7"],["📖 Leer Gratis","https://www.amazon.com/dp/B0H2VKMWZ1?asin=B0H2SXVWR5&revisionId=c1896104&format=3&depth=1"],["✍️ Hacer Reviews","https://www.amazon.com/product-reviews/B0H2VKMWZ1/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews"],["🎶 Podcasts y Musica","https://open.spotify.com/user/317ykrwrwfzqf42uw75bcp3awzqi/playlists"],["📚 Goodreads","https://www.goodreads.com/book/show/252653890-el-jard-n-de-los-que-volvieron?ac=1"],["💬 Si te interesa mi historia conversemos por Whatsapp","https://calendar.app.google/qPbm4PQfsSatFHAV9"],["👤 Sobre el Autor","https://www.amazon.com/stores/author/B0GX6FYBXK/allbooks?ingress=0&visitId=eb5af085-1ace-48ee-9c61-d47621676faa&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=cc3fa529-e2e6-4fce-8dd8-10e038c3bc76"]
+  ];
+  const t6links = [
+    ["🎧 Spoken Review","https://open.spotify.com/episode/2ZsEHMdtUXzwtVT3jvO9G7?si=IWwanv2ERhq75Pfq0itE7w"],["📱 Kindle Version","https://www.amazon.com/When-Families-Fracture-Silence-Disappear-ebook/dp/B0GX35M57P/ref=tmm_kin_swatch₀"],["📖 Paperback","https://www.amazon.com/When-Families-Fracture-Silence-Disappear/dp/B0GX7TCKHD/ref=tmm_pap_swatch₀"],["📚 Hardcover","https://www.amazon.com/dp/B0GY8741Q3"],["📖 Read sample","https://www.amazon.com/When-Families-Fracture-Silence-Disappear-ebook/dp/B0GX35M57P/ref=tmm_kin_swatch_0?asin=B0GX35M57P&revisionId=e5eb7937&format=3&depth=1"],["✍️ Write a Review","https://www.amazon.com/product-reviews/B0GX35M57P/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews"],["🎶 Handpicked Music and Podcasts","https://open.spotify.com/user/317ykrwrwfzqf42uw75bcp3awzqi/playlists"],["📚 Goodreads","https://www.goodreads.com/book/show/251052005-when-families-fracture-in-silence"],["👤 About the Author","https://www.amazon.com/stores/author/B0GX6FYBXK/allbooks?ingress=0&visitId=eb5af085-1ace-48ee-9c61-d47621676faa&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=cc3fa529-e2e6-4fce-8dd8-10e038c3bc76"]
+  ];
+  const t71links = [
+    ["🎧 Spoken Review","https://open.spotify.com/episode/5InbATRatdsqyWipxhgBuv?si=9kyvXh_LSAaAJFftOWHzPA"],["📱 Kindle Version","https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily-ebook/dp/B0GYMCM3N3/ref=tmm_kin_swatch₀"],["📖 Paperback","https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYPK6397/ref=tmm_pap_swatch₀"],["📚 Hardcover","https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYNYJFD5/ref=tmm_hrd_swatch₀"],["📖 Read sample","https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYNYJFD5/ref=tmm_hrd_swatch_0?asin=B0GYNYJFD5&revisionId=&format=4&depth=1"],["✍️ Write a Review","https://www.amazon.com/product-reviews/B0GYNYJFD5/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews"],["🎶 Handpicked Music and Podcasts","https://open.spotify.com/user/31egimzo6jur5btr4tmxl5cbyfpe/playlists"],["📚 Goodreads","https://www.goodreads.com/book/show/251502207-the-lucid-misfit-s-handbook"],["👤 About the Author","https://www.amazon.com/stores/author/B0GYVD1VV3/allbooks?_encoding=UTF8&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=f1214e32-dde0-4b94-b78d-a04562abb350"],["📝 Blog","https://pablomera.blogspot.com/"]
+  ];
+  const t72cells = [
+    {img:"amazon.png", link:"https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYPK6397/ref=tmm_pap_swatch₀"},
+    {img:"bam.png", link:"https://www.booksamillion.com/p/Lucid-Misfits-Handbook/Pablo-Mera/9798259022409"},
+    {img:"bookshoporg.png", link:"https://bookshop.org/p/books/the-lucid-misfit-s-handbook-exploring-the-voluntarily-invisible-in-our-shared-life-pablo-mera/7e540685097c0cf9?ean=9798259022409&next=t"},
+    {img:"bookstw.png", link:"https://www.books.com.tw/products/F01c038522"},
+    {img:"saxo.jpg", link:"https://www.saxo.com/dk/the-lucid-misfits-handbook-exploring-the-voluntarily-invisible-in-our-shared-life_bog_9798259022409"},
+    {img:"ibs.svg", link:"https://www.ibs.it/lucid-misfit-s-handbook-exploring-libro-inglese-pablo-mera/e/9798259022409"},
+    {img:"feltri.svg", link:"https://www.lafeltrinelli.it/lucid-misfit-s-handbook-exploring-libro-inglese-pablo-mera/e/9798259022409"},
+    {img:"amazon.png", link:"https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYNYJFD5/ref=tmm_hrd_swatch₀"}
+  ];
+  function buildTable(container,arr){arr.forEach(([txt,url])=>{let tr=document.createElement('tr');let td=document.createElement('td');td.innerHTML=`<a href="${url}" target="_blank">${txt}</a>`;tr.appendChild(td);container.appendChild(tr);});}
+  buildTable(document.getElementById('t31-links'),t31links);
+  const t32div=document.getElementById('t32-grid');
+  t32cells.forEach((cell,idx)=>{let div=document.createElement('div');div.className='tilt-3d neon-glow';div.style.padding='0.8rem';div.style.textAlign='center';div.style.cursor='pointer';div.innerHTML=`<img src="${cell.img}" width="48" style="border-radius:12px;"><br><span>Tienda</span>`;div.addEventListener('click',()=>window.open(cell.link,'_blank'));t32div.appendChild(div);});
+  buildTable(document.getElementById('t4-links'),t4links);
+  buildTable(document.getElementById('t6-links'),t6links);
+  buildTable(document.getElementById('t71-links'),t71links);
+  const t72grid=document.getElementById('t72-grid');
+  t72cells.forEach(c=>{let d=document.createElement('div');d.className='tilt-3d neon-glow';d.style.padding='0.6rem';d.style.textAlign='center';d.style.cursor='pointer';d.innerHTML=`<img src="${c.img}" width="42"><br><span style="font-size:0.7rem;">Buy</span>`;d.addEventListener('click',()=>window.open(c.link,'_blank'));t72grid.appendChild(d);});
+  // navigation assignments
+  document.getElementById('espanol-btn').onclick=()=>showPage('page2');
+  document.getElementById('english-btn').onclick=()=>showPage('page6');
+  // Page2 Buttons
+  document.getElementById('amzBtn2').onclick=()=>window.open('https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXK7J5GJ/ref=tmm_pap_swatch₀','_blank');
+  document.getElementById('mercBtn2').onclick=()=>window.open('https://www.mercadolibre.com.ar/cod1356-cuando-la-familia-se-rompe-en-silencio-la-historia/up/MLAU3933325251','_blank');
+  document.getElementById('lampAmazonBtn').onclick=()=>window.open('https://www.amazon.com/dp/B0H2VKMWZ1','_blank');
+  document.getElementById('vengAmazon').onclick=()=>window.open('https://www.amazon.com/When-Families-Fracture-Silence-Disappear/dp/B0GX7TCKHD/ref=tmm_pap_swatch_0','_blank');
+  const navMap=[[],['prev1-2','page1','next2-3','page3'],['prev2-3','page2','next3-4','page4'],['prev3-4','page3','next4-5','page5'],['prev4-5','page4','next5-6','page6'],['prev5-6','page5','next6-7','page7'],['prev6-7','page6','next7-1','page1']];
+  for(let i=1;i<=7;i++){if(navMap[i]){let [prevId,prevPage,nextId,nextPage]=navMap[i];if(document.getElementById(prevId))document.getElementById(prevId).onclick=()=>showPage(prevPage);if(document.getElementById(nextId))document.getElementById(nextId).onclick=()=>showPage(nextPage);}}
+  // cell links table main page
+  for(let i=1;i<=6;i++){let cell=document.getElementById(`tilt-cell-${i}`);if(cell)cell.onclick=()=>{let target=cell.dataset.page;showPage(`page${target}`);};}
+  applyTilt(document.querySelectorAll('.tilt-3d'));
+  // countdown June 11 2026 23:00
+  function updateCountdown(){const target=new Date(2026,5,11,23,0,0);const now=new Date();const diff=target-now;if(diff<=0){document.getElementById('countdownDisplay').innerHTML="🚀 Evento Iniciado!";return;}const days=Math.floor(diff/(1000*60*60*24));const hours=Math.floor((diff/(1000*60*60))%24);const mins=Math.floor((diff/1000/60)%60);const secs=Math.floor((diff/1000)%60);document.getElementById('countdownDisplay').innerHTML=`⏳ ${days}d ${hours}h ${mins}m ${secs}s hasta el 11 Jun 2026 · 23hs`;}setInterval(updateCountdown,1000);updateCountdown();
+  // scrolling flags animation
+  setInterval(()=>{const esDiv=document.getElementById('flags-es');if(esDiv){let text=esDiv.innerText;let arr=text.split(' ');arr.push(arr.shift());esDiv.innerText=arr.join(' ');}},1300);
+  setInterval(()=>{const enDiv=document.getElementById('flags-en');if(enDiv){let text=enDiv.innerText;let arr=text.split(' ');arr.push(arr.shift());enDiv.innerText=arr.join(' ');}},1500);
 </script>
-
 </body>
 </html>
