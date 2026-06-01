@@ -1,80 +1,34 @@
-# Bibliografía - Pablo & Vanina
+# Bibliografía
 
-A stunning 3D bilingual bibliographic template showcasing literary works with immersive visual effects and ambient music.
+Minimalistic bilingual template (ES/EN) for 6 books by Vanina Vergara and Pablo Mera.
 
-## 🌟 Features
+## Features
+- Dark background, white letters, high contrast
+- True 3D tilt on mouse move + gentle float animation
+- Neon accents, sparkling link effects
+- Mobile responsive (2 columns desktop, stacks on phone)
+- 7 pages in a single `index.htm` file
+- Background music loops (`kelvin.aac`)
 
-- **7 Interactive Pages** with smooth transitions
-- **True 3D Tilt Effects** on mouse movement
-- **Neon Glow Effects** with customizable colors
-- **Gentle Float Animations** for visual appeal
-- **Responsive Design** (2×2 grid on desktop, stacks on mobile)
-- **Bilingual Support** (Spanish/English)
-- **Ambient Music** (kelvin.aac - loops automatically)
-- **Countdown Timer** for special events
-- **Sparking 3D Link Effects**
-- **Dark Theme** with high contrast for optimal readability
+## Structure
+- **Page 1**: Welcome grid (2×3) with 6 book covers + language buttons
+- **Pages 2-5**: Spanish editions
+- **Pages 6-7**: English editions
+- Each page has its own background cover image
 
-## 📚 Books Featured
+## How to publish on GitHub Pages
+1. Create a new repository named `bibliografia` (or any name)
+2. Upload these files to the root:
+   - `index.htm`
+   - `kelvin.aac` (add your audio file - not included)
+   - All images: `vesp.jpg`, `pesp.jpg`, `lamp.jpg`, `crc.jpg`, `veng.jpg`, `peng.jpg`, `amazon.png`, `bam.png`, `bookshoporg.png`, `bookstw.png`, `mercadolibre.png`, `v1.png`, `saxo.jpg`, `ibs.png`, `feltri.png`
+3. In repo Settings → Pages, set Source to `main` branch / root
+4. Your site will be live at `https://<username>.github.io/bibliografia/`
 
-### Spanish Works:
-1. **Cuando la Familia se Rompe en Silencio** - Vanina Vergara
-2. **Manual del Inadaptado Lúcido** - Pablo Mera
-3. **El Jardín de los que Volvieron** - Vanina Vergara
-4. **Caracol - Menú de Autor** - Pablo Mera
+## Notes
+- All Amazon links were normalized from `swatch₀` to `swatch_0` for functionality
+- IBS and Feltrinelli logos are provided as PNG (`ibs.png`, `feltri.png`) instead of SVG for compatibility
+- Replace placeholder covers (`vesp.jpg`, `pesp.jpg`, `veng.jpg`, `peng.jpg`) with final artwork if needed
+- Music autoplays on first click due to browser policies
 
-### English Works:
-1. **When Families Fracture in Silence** - Vanina Vergara
-2. **The Lucid Misfit's Handbook** - Pablo Mera
-
-## 🚀 Deployment to GitHub Pages
-
-1. **Create a new repository** on GitHub
-2. **Upload all files**:
-   - `index.html` (main file)
-   - `kelvin.aac` (audio file)
-   - All image files (vesp.jpg, pesp.jpg, lamp.jpg, crc.jpg, crc1.png, veng.jpg, peng.jpg, amazon.png, etc.)
-   - `README.md`
-
-3. **Enable GitHub Pages**:
-   - Go to repository Settings
-   - Scroll to "Pages" section
-   - Select "main" branch and "/ (root)" folder
-   - Click Save
-
-4. **Access your site** at: `https://yourusername.github.io/repository-name`
-
-## 📁 Required Files
-
-### Images Needed:
-- vesp.jpg (Page 2 background)
-- pesp.jpg (Page 3 background)
-- lamp.jpg (Page 4 background)
-- crc.jpg (Page 5 background)
-- crc1.png (Caracol image)
-- veng.jpg (Page 6 background)
-- peng.jpg (Page 7 background)
-- amazon.png (Amazon logo)
-- mercadolibre.png (MercadoLibre logo)
-- v1.png (Alternative image)
-- ibs.svg (IBS logo)
-- feltri.svg (LaFeltrinelli logo)
-- bam.png (BooksAMillion logo)
-- bookshoporg.png (Bookshop.org logo)
-- bookstw.png (Books.com.tw logo)
-- saxo.jpg (Saxo logo)
-- spain.png, paraguay.png, argentina.png, uruguay.png (Flags)
-- usa.png, uk.png, australia.png (Flags)
-
-### Audio:
-- kelvin.aac (Background music)
-
-## 🎨 Customization
-
-### Colors:
-Edit CSS variables in `:root`:
-```css
---neon-blue: #00f3ff;
---neon-pink: #ff00ff;
---neon-green: #00ff00;
---neon-yellow: #ffff00;
+© 2026 - Ready to publish
