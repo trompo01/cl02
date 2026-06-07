@@ -1,379 +1,432 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bibliografía</title>
-<style>
-:root{
-  --bg:#08080a;
-  --text:#ffffff;
-  --accent:#00e5ff;
-  --accent2:#ff00aa;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
-  line-height:1.6;
-  overflow-x:hidden;
-}
-a{color:var(--accent);text-decoration:none}
-h1,h2{margin:0.5em 0;text-align:center;text-shadow:0 0 12px rgba(0,229,255,0.3)}
-.page{
-  display:none;
-  min-height:100vh;
-  padding:2rem 1rem 5rem;
-  position:relative;
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
-}
-.page.active{display:block}
-.page::before{
-  content:"";
-  position:absolute;inset:0;
-  background:rgba(0,0,0,0.78);
-  z-index:0;
-}
-.page > .content{
-  position:relative;z-index:1;max-width:1100px;margin:0 auto;
-}
-.grid-2x3{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:1.5rem;
-  max-width:900px;
-  margin:2rem auto;
-}
-@media(max-width:720px){.grid-2x3{grid-template-columns:1fr}}
-.btn-3d{
-  display:flex;align-items:center;justify-content:center;
-  background:#0e0e12;
-  border:2px solid var(--accent);
-  border-radius:16px;
-  padding:0.8rem;
-  box-shadow:0 8px 20px rgba(0,0,0,0.6),0 0 20px rgba(0,229,255,0.15),inset 0 0 12px rgba(0,0,0,0.9);
-  transform-style:preserve-3d;
-  transition:transform 0.15s ease, box-shadow 0.2s;
-  animation:float 5s ease-in-out infinite;
-  position:relative;
-  overflow:hidden;
-  cursor:pointer;
-}
-.btn-3d:hover{box-shadow:0 12px 30px rgba(0,0,0,0.7),0 0 30px rgba(0,229,255,0.35)}
-.btn-3d img{
-  width:100%;height:190px;object-fit:cover;border-radius:10px;display:block;
-}
-.btn-3d.small img{height:120px}
-@keyframes float{
-  0%,100%{transform:translateY(0) rotateX(0) rotateY(0)}
-  50%{transform:translateY(-8px) rotateX(2deg) rotateY(-2deg)}
-}
-.tilt{will-change:transform}
-.sparkle{
-  position:relative;
-  display:inline-block;
-  padding:0.2em 0;
-  color:#fff;
-  font-weight:600;
-  letter-spacing:0.3px;
-}
-.sparkle::after{
-  content:"";
-  position:absolute;left:-10%;top:0;width:60%;height:100%;
-  background:linear-gradient(100deg,transparent,rgba(255,255,255,0.8),transparent);
-  transform:skewX(-20deg) translateX(-150%);
-  animation:shine 2.8s infinite;
-  pointer-events:none;
-}
-@keyframes shine{to{transform:skewX(-20deg) translateX(250%)}}
-.links-table{
-  width:100%;max-width:800px;margin:1.5rem auto;border-collapse:separate;border-spacing:0 0.6rem;
-}
-.links-table td{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(0,229,255,0.25);
-  padding:0.9rem 1.1rem;
-  border-radius:10px;
-  backdrop-filter:blur(4px);
-}
-.links-table a{color:#e6fbff;display:block}
-.lang-buttons{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
-.lang-btn{min-width:220px}
-.flag{font-size:1.4rem;margin-right:0.5rem}
-.alt-img{position:relative;width:90px;height:90px;margin:0 auto}
-.alt-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity 0.6s}
-.footer-nav{display:flex;gap:1rem;justify-content:center;margin-top:2.5rem;flex-wrap:wrap}
-.neon-border{border-color:var(--accent2);box-shadow:0 0 20px rgba(255,0,170,0.2)}
-h1.title{font-size:clamp(1.6rem,3.5vw,2.6rem);margin-bottom:0.2rem}
-h2.subtitle{font-size:clamp(1rem,2vw,1.3rem);color:#b8f7ff;font-weight:400;margin-top:0}
-.author{color:#ffd580;text-align:center;margin-bottom:1.5rem}
-.music-hint{position:fixed;bottom:10px;right:12px;background:rgba(0,0,0,0.6);padding:0.4rem 0.7rem;border-radius:8px;font-size:0.8rem;border:1px solid rgba(255,255,255,0.15);z-index:99}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliografía - Vanina Vergara & Pablo Mera</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-bg: #0a0a0a;
+            --white-text: #ffffff;
+            --neon-accent: #00ff00;
+            --neon-blue: #00d4ff;
+            --neon-purple: #ff00ff;
+            --subtle-border: #1a1a1a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            color: var(--white-text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        body {
+            perspective: 1200px;
+        }
+
+        /* Audio Player */
+        audio {
+            display: none;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            border-bottom: 2px solid var(--neon-accent);
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.05), rgba(0, 212, 255, 0.05));
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--white-text), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            color: var(--neon-accent);
+            font-weight: 300;
+            letter-spacing: 0.1em;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Grid Container */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            width: 100%;
+            max-width: 700px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+                max-width: 600px;
+            }
+        }
+
+        /* 3D Button Cells */
+        .book-button {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            transform-style: preserve-3d;
+            transition: all 0.3s ease;
+            border: 2px solid var(--neon-accent);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+
+        .book-button:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .book-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Sparking Effect */
+        .book-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 0, 0.1) 50%, transparent 70%);
+            animation: sparkle 3s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                transform: translateX(-100%);
+            }
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Language/Navigation Buttons Section */
+        .nav-section {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.4s both;
+            margin-top: 2rem;
+        }
+
+        .nav-button {
+            position: relative;
+            padding: 1rem 2rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--white-text);
+            background: var(--glass-bg);
+            border: 2px solid var(--neon-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-button:hover {
+            background: var(--glass-bg);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5), inset 0 0 10px rgba(0, 212, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                transform: translateX(-100%);
+            }
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        .flag-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 2rem;
+            height: 1.5rem;
+            overflow: hidden;
+        }
+
+        .flag {
+            font-size: 1.5rem;
+            animation: scrollFlags 6s linear infinite;
+        }
+
+        @keyframes scrollFlags {
+            0%, 100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            33% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            34% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            35% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            36% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            66% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            67% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            68% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            69% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Footer */
+        footer {
+            padding: 1rem;
+            text-align: center;
+            color: var(--neon-accent);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--subtle-border);
+            margin-top: 2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mouse Tilt Effect */
+        .tilt-container {
+            transform-style: preserve-3d;
+            perspective: 1200px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                max-width: 100%;
+            }
+
+            .book-button {
+                border-radius: 6px;
+            }
+
+            .nav-section {
+                gap: 1rem;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            header {
+                padding: 1.5rem 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<audio id="bgm" src="kelvin.aac" loop autoplay></audio>
-<div class="music-hint">♪ kelvin.aac loop</div>
+    <audio id="bgMusic" loop>
+        <source src="kelvin.aac" type="audio/aac">
+        Your browser does not support the audio element.
+    </audio>
 
-<!-- PAGE 1 -->
-<div id="page1" class="page active" style="background:radial-gradient(ellipse at center,#0a0a14 0%,#050508 100%)">
-  <div class="content">
-    <h1 class="title">Bibliografía</h1>
-    <h2 class="subtitle">Obras de Vanina Vergara y Pablo Mera</h2>
-    <div class="grid-2x3">
-      <a class="btn-3d tilt" onclick="showPage('page2')"><img src="vesp.jpg" alt="Cuando la familia se rompe en silencio"></a>
-      <a class="btn-3d tilt" onclick="showPage('page5')"><img src="crc.jpg" alt="Caracol"></a>
-      <a class="btn-3d tilt" onclick="showPage('page3')"><img src="pesp.jpg" alt="Manual del Inadaptado Lúcido"></a>
-      <a class="btn-3d tilt" onclick="showPage('page6')"><img src="veng.jpg" alt="When Families Fracture in Silence"></a>
-      <a class="btn-3d tilt" onclick="showPage('page4')"><img src="lamp.jpg" alt="El Jardín de los que Volvieron"></a>
-      <a class="btn-3d tilt" onclick="showPage('page7')"><img src="peng.jpg" alt="The Lucid Misfit's Handbook"></a>
-    </div>
-    <div class="lang-buttons">
-      <a class="btn-3d lang-btn tilt sparkle" onclick="showPage('page2')">
-        <span class="flag" id="flag-es">🇪🇸</span> [ESPAÑOL]
-      </a>
-      <a class="btn-3d lang-btn tilt sparkle neon-border" onclick="showPage('page6')">
-        <span class="flag" id="flag-en">🇺🇸</span> [ENGLISH]
-      </a>
-    </div>
-  </div>
-</div>
+    <header>
+        <h1>Bibliografía</h1>
+        <p class="subtitle">Vanina Vergara & Pablo Mera</p>
+    </header>
 
-<!-- PAGE 2 -->
-<div id="page2" class="page" style="background-image:linear-gradient(rgba(0,0,0,0.78),rgba(0,0,0,0.78)),url('vesp.jpg')">
-  <div class="content">
-    <h1 class="title">CUANDO LA FAMILIA SE ROMPE EN SILENCIO</h1>
-    <h2 class="subtitle">La historia jamás contada de una mujer que se negó a desaparecer</h2>
-    <div class="author">Autora: Vanina Vergara</div>
-    <table class="links-table">
-      <tr><td><a class="sparkle" href="https://open.spotify.com/episode/0NPQyJXWyQDAiU5YjKMuTu" target="_blank">Reseña hablada</a></td></tr>
-      <tr><td><a class="sparkle" href="https://calendar.app.google/qPbm4PQfsSatFHAV9" target="_blank">Si te interesa mi historia conversemos por Whatsapp</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0GX32NHDV" target="_blank">Kindle Version</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXK7J5GJ/ref=tmm_pap_swatch_0" target="_blank">Tapa Blanda</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXRZ1356/ref=tmm_hrd_swatch_0" target="_blank">Tapa Dura</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXRZ1356/ref=cm_cr_arp_d_product_top?ie=UTF8&asin=B0GXRZ1356&revisionId=&format=4&depth=1" target="_blank">Leer Gratis</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/product-reviews/B0GXRZ1356/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">Hacer Reviews</a></td></tr>
-      <tr><td><a class="sparkle" href="https://open.spotify.com/user/317ykrwrwfzqf42uw75bcp3awzqi/playlists" target="_blank">Podcasts y Musica</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.goodreads.com/book/show/251226179-cuando-la-familia-se-rompe-en-silencio" target="_blank">Goodreads</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/stores/author/B0GX6FYBXK/allbooks?ingress=0&visitId=eb5af085-1ace-48ee-9c61-d47621676faa&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=cc3fa529-e2e6-4fce-8dd8-10e038c3bc76" target="_blank">Sobre el Autor</a></td></tr>
-    </table>
-    <div style="display:flex;gap:1.5rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap">
-      <a class="btn-3d tilt" href="https://www.amazon.com/CUANDO-FAMILIA-ROMPE-SILENCIO-desaparecer/dp/B0GXK7J5GJ/ref=tmm_pap_swatch_0" target="_blank">
-        <div class="alt-img" data-imgs="vesp.jpg,amazon.png"></div>
-      </a>
-      <a class="btn-3d tilt" href="https://www.mercadolibre.com.ar/cod1356-cuando-la-familia-se-rompe-en-silencio-la-historia/up/MLAU3933325251" target="_blank">
-        <div class="alt-img" data-imgs="v1.png,mercadolibre.png"></div>
-      </a>
-    </div>
-    <div class="footer-nav">
-      <a class="btn-3d tilt sparkle" onclick="showPage('page3')"><span class="toggle-text" data-texts="NEXT,SIGUIENTE"></span></a>
-      <a class="btn-3d tilt sparkle neon-border" onclick="showPage('page1')"><span class="toggle-text" data-texts="PREVIOUS,ANTERIOR"></span></a>
-    </div>
-  </div>
-</div>
+    <div class="container">
+        <div class="grid-container">
+            <a href="page2.htm" class="book-button">
+                <img src="vesp.jpg" alt="Cuando la Familia se Rompe en Silencio">
+            </a>
+            <a href="page3.htm" class="book-button">
+                <img src="pesp.jpg" alt="Manual del Inadaptado Lúcido">
+            </a>
+            <a href="page4.htm" class="book-button">
+                <img src="lamp.jpg" alt="El Jardín de los que Volvieron">
+            </a>
+            <a href="page5.htm" class="book-button">
+                <img src="EJDL.jpg" alt="El Jardín de Luma">
+            </a>
+            <a href="page6.htm" class="book-button">
+                <img src="crc.jpg" alt="Caracol - Menú de Autor">
+            </a>
+            <a href="page7.htm" class="book-button">
+                <img src="CRCENG.png" alt="Caracol Author's Menu">
+            </a>
+            <a href="page8.htm" class="book-button">
+                <img src="veng.jpg" alt="When Families Fracture in Silence">
+            </a>
+            <a href="page9.htm" class="book-button">
+                <img src="peng.jpg" alt="The Lucid Misfit's Handbook">
+            </a>
+        </div>
 
-<!-- PAGE 3 -->
-<div id="page3" class="page" style="background-image:linear-gradient(rgba(0,0,0,0.78),rgba(0,0,0,0.78)),url('pesp.jpg')">
-  <div class="content">
-    <h1 class="title">MANUAL DEL INADAPTADO LÚCIDO</h1>
-    <h2 class="subtitle">No encajar es una Ventaja. Un manual para pensar mejor y vivir libre</h2>
-    <div class="author">Autor: Pablo Mera</div>
-    <table class="links-table">
-      <tr><td><a class="sparkle" href="https://open.spotify.com/episode/68ViKPcRmymkiRUbdKDO9d?nd=1&dlsi=47136d4ef78a4afa" target="_blank">Reseña hablada</a></td></tr>
-      <tr><td><a class="sparkle" href="https://calendar.app.google/KHzX46haiRjtQo6Y9" target="_blank">Si te interesan mis ideas conversemos por Google Meet</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0GX9ZZPCL" target="_blank">Kindle Version</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/MANUAL-DEL-INADAPTADO-L%C3%9ACIDO-encajar/dp/B0GYYXMR9G/ref=tmm_pap_swatch_0" target="_blank">Tapa Blanda</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/MANUAL-DEL-INADAPTADO-L%C3%9ACIDO-encajar/dp/B0GYZ4D8WN/ref=tmm_hrd_swatch_0" target="_blank">Tapa Dura</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0GYZ4D8WN?asin=B0GYZ4D8WN&revisionId=&format=4&depth=1" target="_blank">Leer Gratis</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/product-reviews/B0GYZ4D8WN/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">Hacer Reviews</a></td></tr>
-      <tr><td><a class="sparkle" href="https://open.spotify.com/user/31wg5yir2hbksdgigz7gqloozfny/playlists" target="_blank">Podcasts y Musica</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.goodreads.com/book/show/251612051-manual-del-inadaptado-l-cido?ac=1&from_search=true&qid=HkwoBXUaLj&rank=2" target="_blank">Goodreads</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/stores/author/B0GYVD1VV3/allbooks?_encoding=UTF8&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=f1214e32-dde0-4b94-b78d-a04562abb350" target="_blank">Sobre el Autor</a></td></tr>
-      <tr><td><a class="sparkle" href="https://pablomera.blogspot.com/" target="_blank">Blog</a></td></tr>
-    </table>
-    <div class="grid-2x3" style="max-width:600px;margin-top:2rem">
-      <a class="btn-3d small tilt" href="https://www.amazon.com/MANUAL-DEL-INADAPTADO-L%C3%9ACIDO-encajar/dp/B0GYYXMR9G/ref=tmm_pap_swatch_0" target="_blank"><img src="amazon.png" alt="Amazon"></a>
-      <a class="btn-3d small tilt" href="https://www.lafeltrinelli.it/manual-del-inadaptado-lucido-no-libro-inglese-pablo-mera/e/9798259335431" target="_blank"><img src="feltri.png" alt="Feltrinelli"></a>
-      <a class="btn-3d small tilt" href="https://www.ibs.it/manual-del-inadaptado-lucido-no-libro-inglese-pablo-mera/e/9798259335431" target="_blank"><img src="ibs.png" alt="IBS"></a>
-      <a class="btn-3d small tilt" href="https://www.booksamillion.com/p/Manual-Inadaptado-Lcido/Pablo-Mera/9798259335431" target="_blank"><img src="bam.png" alt="BAM"></a>
+        <div class="nav-section">
+            <a href="page2.htm" class="nav-button">
+                <span class="flag-container">
+                    <span class="flag">🇪🇸🇵🇾🇦🇷🇺🇾</span>
+                </span>
+                <span>[ESPAÑOL]</span>
+            </a>
+            <a href="page7.htm" class="nav-button">
+                <span class="flag-container">
+                    <span class="flag">🇺🇸🇬🇧🇦🇺</span>
+                </span>
+                <span>[ENGLISH]</span>
+            </a>
+        </div>
     </div>
-    <div class="footer-nav">
-      <a class="btn-3d tilt sparkle" onclick="showPage('page4')"><span class="toggle-text" data-texts="NEXT,SIGUIENTE"></span></a>
-      <a class="btn-3d tilt sparkle neon-border" onclick="showPage('page2')"><span class="toggle-text" data-texts="PREVIOUS,ANTERIOR"></span></a>
-    </div>
-  </div>
-</div>
 
-<!-- PAGE 4 -->
-<div id="page4" class="page" style="background-image:linear-gradient(rgba(0,0,0,0.78),rgba(0,0,0,0.78)),url('lamp.jpg')">
-  <div class="content">
-    <h1 class="title">EL JARDÍN DE LOS QUE VOLVIERON</h1>
-    <h2 class="subtitle">Caer es la única forma de volar</h2>
-    <div class="author">Autora: Vanina Vergara</div>
-    <table class="links-table">
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0H2SXVWR5" target="_blank">Kindle Version</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0H2VKMWZ1" target="_blank">Tapa Blanda</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0H2VXDQY7" target="_blank">Tapa Dura</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0H2VKMWZ1?asin=B0H2SXVWR5&revisionId=c1896104&format=3&depth=1" target="_blank">Leer Gratis</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/product-reviews/B0H2VKMWZ1/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">Hacer un Review</a></td></tr>
-      <tr><td><a class="sparkle" href="https://open.spotify.com/user/317ykrwrwfzqf42uw75bcp3awzqi/playlists" target="_blank">Podcasts y Musica</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.goodreads.com/book/show/252653890-el-jard-n-de-los-que-volvieron?ac=1" target="_blank">Goodreads</a></td></tr>
-      <tr><td><a class="sparkle" href="https://calendar.app.google/qPbm4PQfsSatFHAV9" target="_blank">Si te interesa mi historia conversemos por Whatsapp</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/stores/author/B0GX6FYBXK/allbooks?ingress=0&visitId=eb5af085-1ace-48ee-9c61-d47621676faa&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=cc3fa529-e2e6-4fce-8dd8-10e038c3bc76" target="_blank">Sobre el Autor</a></td></tr>
-    </table>
-    <div style="display:flex;justify-content:center;margin-top:1.5rem">
-      <a class="btn-3d tilt" href="https://www.amazon.com/dp/B0H2VKMWZ1" target="_blank"><div class="alt-img" data-imgs="lamp.jpg,amazon.png"></div></a>
-    </div>
-    <div class="footer-nav">
-      <a class="btn-3d tilt sparkle" onclick="showPage('page5')"><span class="toggle-text" data-texts="NEXT,SIGUIENTE"></span></a>
-      <a class="btn-3d tilt sparkle neon-border" onclick="showPage('page3')"><span class="toggle-text" data-texts="PREVIOUS,ANTERIOR"></span></a>
-    </div>
-  </div>
-</div>
+    <footer>
+        <p>&copy; 2026 Vanina Vergara & Pablo Mera. All rights reserved.</p>
+    </footer>
 
-<!-- PAGE 5 -->
-<div id="page5" class="page" style="background-image:linear-gradient(rgba(0,0,0,0.78),rgba(0,0,0,0.78)),url('crc.jpg')">
-  <div class="content">
-    <h1 class="title">CARACOL – Menú de Autor</h1>
-    <h2 class="subtitle">Memorias de la Discoteca que Transformó la Noche</h2>
-    <div class="author">Autor: Pablo Mera</div>
-    <table class="links-table">
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0H2RT4F8M" target="_blank">Kindle Version</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0H3KWW8F6" target="_blank">Tapa Blanda</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0H3KGMQVJ" target="_blank">Tapa Dura</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0H2RT4F8M/ref=sr_1_1?sr=8-1&asin=B0H2RT4F8M&revisionId=d42c7994&format=3&depth=1" target="_blank">Leer Gratis</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/product-reviews/B0H2RT4F8M/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">Hacer un Review</a></td></tr>
-      <tr><td><a class="sparkle" href="https://pablomera.blogspot.com/2026/05/caracol-1993-playlist.html" target="_blank">Musica de Caracol de los 90s</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/stores/author/B0GYVD1VV3/allbooks?_encoding=UTF8&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=f1214e32-dde0-4b94-b78d-a04562abb350" target="_blank">Sobre el Autor</a></td></tr>
-      <tr><td><a class="sparkle" href="https://pablomera.blogspot.com/" target="_blank">Blog</a></td></tr>
-    </table>
-    <div style="display:flex;justify-content:center;margin-top:1.5rem">
-      <a class="btn-3d tilt" href="https://www.amazon.com/dp/B0H3KGMQVJ" target="_blank"><div class="alt-img" data-imgs="crc.jpg,amazon.png"></div></a>
-    </div>
-    <div class="footer-nav">
-      <a class="btn-3d tilt sparkle" onclick="showPage('page6')"><span class="toggle-text" data-texts="NEXT,SIGUIENTE"></span></a>
-      <a class="btn-3d tilt sparkle neon-border" onclick="showPage('page4')"><span class="toggle-text" data-texts="PREVIOUS,ANTERIOR"></span></a>
-    </div>
-  </div>
-</div>
+    <script>
+        // Auto-play music
+        window.addEventListener('load', function() {
+            const audio = document.getElementById('bgMusic');
+            audio.play().catch(err => console.log('Audio autoplay prevented:', err));
+        });
 
-<!-- PAGE 6 -->
-<div id="page6" class="page" style="background-image:linear-gradient(rgba(0,0,0,0.78),rgba(0,0,0,0.78)),url('veng.jpg')">
-  <div class="content">
-    <h1 class="title">WHEN FAMILIES FRACTURE IN SILENCE</h1>
-    <h2 class="subtitle">A true story of silence, loss, and a mother's fight to be seen</h2>
-    <div class="author">Author: Vanina Vergara</div>
-    <table class="links-table">
-      <tr><td><a class="sparkle" href="https://open.spotify.com/episode/2ZsEHMdtUXzwtVT3jvO9G7?si=IWwanv2ERhq75Pfq0itE7w" target="_blank">Spoken Review</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/When-Families-Fracture-Silence-Disappear-ebook/dp/B0GX35M57P/ref=tmm_kin_swatch_0" target="_blank">Kindle Version</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/When-Families-Fracture-Silence-Disappear/dp/B0GX7TCKHD/ref=tmm_pap_swatch_0" target="_blank">Paperback</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/dp/B0GY8741Q3" target="_blank">Hardcover</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/When-Families-Fracture-Silence-Disappear-ebook/dp/B0GX35M57P/ref=tmm_kin_swatch_0?asin=B0GX35M57P&revisionId=e5eb7937&format=3&depth=1" target="_blank">Read sample</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/product-reviews/B0GX35M57P/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">Write a Review</a></td></tr>
-      <tr><td><a class="sparkle" href="https://open.spotify.com/user/317ykrwrwfzqf42uw75bcp3awzqi/playlists" target="_blank">Handpicked Music and Podcasts</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.goodreads.com/book/show/251052005-when-families-fracture-in-silence" target="_blank">Goodreads</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/stores/author/B0GX6FYBXK/allbooks?ingress=0&visitId=eb5af085-1ace-48ee-9c61-d47621676faa&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=cc3fa529-e2e6-4fce-8dd8-10e038c3bc76" target="_blank">About the Author</a></td></tr>
-    </table>
-    <div style="display:flex;justify-content:center;margin-top:1.5rem">
-      <a class="btn-3d tilt" href="https://www.amazon.com/When-Families-Fracture-Silence-Disappear/dp/B0GX7TCKHD/ref=tmm_pap_swatch_0" target="_blank"><div class="alt-img" data-imgs="veng.jpg,amazon.png"></div></a>
-    </div>
-    <div class="footer-nav">
-      <a class="btn-3d tilt sparkle" onclick="showPage('page7')"><span class="toggle-text" data-texts="NEXT,SIGUIENTE"></span></a>
-      <a class="btn-3d tilt sparkle neon-border" onclick="showPage('page5')"><span class="toggle-text" data-texts="PREVIOUS,ANTERIOR"></span></a>
-    </div>
-  </div>
-</div>
+        // 3D Tilt Effect
+        document.querySelectorAll('.book-button').forEach(button => {
+            button.addEventListener('mousemove', (e) => {
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const rotateX = (y - rect.height / 2) / 10;
+                const rotateY = (rect.width / 2 - x) / 10;
+                
+                button.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+            });
 
-<!-- PAGE 7 -->
-<div id="page7" class="page" style="background-image:linear-gradient(rgba(0,0,0,0.78),rgba(0,0,0,0.78)),url('peng.jpg')">
-  <div class="content">
-    <h1 class="title">THE LUCID MISFIT'S HANDBOOK</h1>
-    <h2 class="subtitle">Exploring The Voluntarily Invisible in our Shared Life</h2>
-    <div class="author">Author: Pablo Mera</div>
-    <table class="links-table">
-      <tr><td><a class="sparkle" href="https://open.spotify.com/episode/5InbATRatdsqyWipxhgBuv?si=9kyvXh_LSAaAJFftOWHzPA" target="_blank">Spoken Review</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily-ebook/dp/B0GYMCM3N3/ref=tmm_kin_swatch_0" target="_blank">Kindle Version</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYPK6397/ref=tmm_pap_swatch_0" target="_blank">Paperback</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYNYJFD5/ref=tmm_hrd_swatch_0" target="_blank">Hardcover</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYNYJFD5/ref=tmm_hrd_swatch_0?asin=B0GYNYJFD5&revisionId=&format=4&depth=1" target="_blank">Read sample</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/product-reviews/B0GYNYJFD5/ref=cm_cr_dp_d_show_all_top?_encoding=UTF8&ie=UTF8&reviewerType=all_reviews" target="_blank">Write a Review</a></td></tr>
-      <tr><td><a class="sparkle" href="https://open.spotify.com/user/31egimzo6jur5btr4tmxl5cbyfpe/playlists" target="_blank">Handpicked Music and Podcasts</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.goodreads.com/book/show/251502207-the-lucid-misfit-s-handbook" target="_blank">Goodreads</a></td></tr>
-      <tr><td><a class="sparkle" href="https://www.amazon.com/stores/author/B0GYVD1VV3/allbooks?_encoding=UTF8&ref_=aufs_ap_ahdr_dsk_ab&ccs_id=f1214e32-dde0-4b94-b78d-a04562abb350" target="_blank">About the Author</a></td></tr>
-      <tr><td><a class="sparkle" href="https://pablomera.blogspot.com/" target="_blank">Blog</a></td></tr>
-    </table>
-    <div class="grid-2x3" style="max-width:800px;margin-top:2rem">
-      <a class="btn-3d small tilt" href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYPK6397/ref=tmm_pap_swatch_0" target="_blank"><img src="amazon.png" alt=""></a>
-      <a class="btn-3d small tilt" href="https://www.saxo.com/dk/the-lucid-misfits-handbook-exploring-the-voluntarily-invisible-in-our-shared-life_bog_9798259022409" target="_blank"><img src="saxo.jpg" alt=""></a>
-      <a class="btn-3d small tilt" href="https://www.booksamillion.com/p/Lucid-Misfits-Handbook/Pablo-Mera/9798259022409" target="_blank"><img src="bam.png" alt=""></a>
-      <a class="btn-3d small tilt" href="https://www.ibs.it/lucid-misfit-s-handbook-exploring-libro-inglese-pablo-mera/e/9798259022409" target="_blank"><img src="ibs.png" alt=""></a>
-      <a class="btn-3d small tilt" href="https://bookshop.org/p/books/the-lucid-misfit-s-handbook-exploring-the-voluntarily-invisible-in-our-shared-life-pablo-mera/7e540685097c0cf9?ean=9798259022409&next=t" target="_blank"><img src="bookshoporg.png" alt=""></a>
-      <a class="btn-3d small tilt" href="https://www.lafeltrinelli.it/lucid-misfit-s-handbook-exploring-libro-inglese-pablo-mera/e/9798259022409" target="_blank"><img src="feltri.png" alt=""></a>
-      <a class="btn-3d small tilt" href="https://www.books.com.tw/products/F01c038522" target="_blank"><img src="bookstw.png" alt=""></a>
-      <a class="btn-3d small tilt" href="https://www.amazon.com/LUCID-MISFITS-HANDBOOK-Exploring-Voluntarily/dp/B0GYNYJFD5/ref=tmm_hrd_swatch_0" target="_blank"><img src="amazon.png" alt=""></a>
-    </div>
-    <div class="footer-nav">
-      <a class="btn-3d tilt sparkle" onclick="showPage('page1')"><span class="toggle-text" data-texts="NEXT,SIGUIENTE"></span></a>
-      <a class="btn-3d tilt sparkle neon-border" onclick="showPage('page6')"><span class="toggle-text" data-texts="PREVIOUS,ANTERIOR"></span></a>
-    </div>
-  </div>
-</div>
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
 
-<script>
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-  const bgm=document.getElementById('bgm');
-  if(bgm && bgm.paused){bgm.play().catch(()=>{});}
-}
-
-// Tilt effect
-document.querySelectorAll('.tilt').forEach(el=>{
-  el.addEventListener('mousemove',e=>{
-    const r=el.getBoundingClientRect();
-    const x=e.clientX-r.left-r.width/2;
-    const y=e.clientY-r.top-r.height/2;
-    el.style.transform=`perspective(800px) rotateY(${x/15}deg) rotateX(${-y/15}deg) translateZ(10px)`;
-  });
-  el.addEventListener('mouseleave',()=>{el.style.transform='';});
-});
-
-// Flag cycle
-const flagsEs=['🇪🇸','🇵🇾','🇦🇷','🇺🇾'];
-const flagsEn=['🇺🇸','🇬🇧','🇦🇺'];
-let iEs=0,iEn=0;
-setInterval(()=>{
-  document.getElementById('flag-es').textContent=flagsEs[iEs=(iEs+1)%flagsEs.length];
-  document.getElementById('flag-en').textContent=flagsEn[iEn=(iEn+1)%flagsEn.length];
-},1500);
-
-// Alternating images
-document.querySelectorAll('.alt-img').forEach(div=>{
-  const imgs=div.dataset.imgs.split(',');
-  let idx=0;
-  div.innerHTML=`<img src="${imgs[0]}"><img src="${imgs[1]}" style="opacity:0">`;
-  const [a,b]=div.querySelectorAll('img');
-  setInterval(()=>{
-    idx=1-idx;
-    a.style.opacity=idx?0:1;
-    b.style.opacity=idx?1:0;
-  },2200);
-});
-
-// Toggle text
-document.querySelectorAll('.toggle-text').forEach(sp=>{
-  const texts=sp.dataset.texts.split(',');
-  let t=0;
-  sp.textContent=texts[0];
-  setInterval(()=>{t=1-t;sp.textContent=texts[t];},1800);
-});
-
-// Autoplay fix
-document.addEventListener('click',()=>{const bgm=document.getElementById('bgm');if(bgm.paused)bgm.play().catch(()=>{});},{once:true});
-</script>
+        // Gentle float animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+            
+            header {
+                animation: fadeInDown 0.8s ease-out, float 3s ease-in-out infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
